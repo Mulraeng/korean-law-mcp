@@ -70,8 +70,11 @@ const CASE_CODES = [
 export const CASE_CODE_PATTERN =
   `(?:${[...CASE_CODES].sort((a, b) => b.length - a.length).join("|")})`
 
+/** 사건 일련번호 문법 — 최대 8자리이며 긴 번호의 앞부분만 읽지 않는다. */
+export const CASE_SERIAL_PATTERN = "\\d{1,8}(?!\\d)"
+
 /** 법원 사건번호 전체 형태 (연도 4자리 + 부호 + 일련번호). 공백 표기를 허용한다. */
-export const COURT_CASE_PATTERN = `(?:19|20)\\d{2}\\s*${CASE_CODE_PATTERN}\\s*\\d{1,8}`
+export const COURT_CASE_PATTERN = `(?:19|20)\\d{2}\\s*${CASE_CODE_PATTERN}\\s*${CASE_SERIAL_PATTERN}`
 
 // 부존재 단정(✗) 전용 게이트. 추출보다 한 단계 더 보수적인 자리다 —
 // 여기서 통과시키면 "지어낸 인용"이라고 사용자에게 단정하게 된다.
@@ -94,7 +97,7 @@ const NON_CASE_SYLLABLES = "명개원건회차호년월일조항목억천"
 // 공백 수량도 차단한다("2030 도 3000 명이"). 공백 뒤는 단위+조사의 어절 경계까지 본다:
 // 단위 음절만 보면 진짜 인용 뒤 "원심"·"조문"까지 오탐으로 지우게 된다.
 const CASE_NO_RE = new RegExp(
-  `(?<![\\d제])(\\d{2,4}) ?(${CASE_CODE_PATTERN}) ?(\\d{1,7})` +
+  `(?<![\\d제])(\\d{2,4}) ?(${CASE_CODE_PATTERN}) ?(${CASE_SERIAL_PATTERN})` +
   `(?![\\d${NON_CASE_SYLLABLES}]| [${NON_CASE_SYLLABLES}](?:으로|로|에서|까지|부터|[을를이가은는에의도만])?(?=$|[^가-힣]))`,
   "g"
 )

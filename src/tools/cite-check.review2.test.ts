@@ -10,7 +10,7 @@ const row = (id: string, caseNo: string) => `<prec><판례일련번호>${id}</�
 const xml = (...rows: string[]) => `<PrecSearch><totalCnt>${rows.length}</totalCnt><page>1</page>${rows.join("")}</PrecSearch>`
 
 describe("cite_check 대상 검색 경계", () => {
-  it.each(["2013다61381", "96누4671"])("띄어 쓴 사건번호도 본문 스캔과 동일하게 정규화한다: %s", async caseNo => {
+  it.each(["2013다61381", "96누4671", "2023개회10000000"])("띄어 쓴 사건번호도 본문 스캔과 동일하게 정규화한다: %s", async caseNo => {
     const fetchApi = vi.fn(async (request: { endpoint: string; extraParams: Record<string, string> }) => {
       if (request.endpoint === "lawService.do") return JSON.stringify({ PrecService: { 판례내용: "본문" } })
       return request.extraParams.nb ? xml(row("target", caseNo)) : xml()

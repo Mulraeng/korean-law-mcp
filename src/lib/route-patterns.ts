@@ -19,7 +19,7 @@ import {
   isRegionToken,
 } from "./query-extract.js"
 import { ROUTABLE_SCENARIO_RULES } from "./scenario-rules.js"
-import { CASE_CODE_PATTERN } from "./case-citation.js"
+import { CASE_CODE_PATTERN, CASE_SERIAL_PATTERN } from "./case-citation.js"
 
 export interface Pattern {
   /** 패턴 이름 */
@@ -46,7 +46,7 @@ export interface Pattern {
 // `[가-힣]{1,5}` 와일드카드는 "2023년 5월"의 `년`을 부호로 읽었고, 어순마다 덧댄
 // `(?!년|월|일)` 가드는 한쪽에만 있었다. 실재 부호만 받으면 가드가 필요 없다.
 // COURT_CASE_PATTERN 은 연도 4자리 전용이라 "96누4671" 표기를 놓쳐 쓰지 않는다.
-const CASE_NO_SRC = `(?<![\\d제])\\d{2,4}\\s*${CASE_CODE_PATTERN}\\s*\\d{1,8}`
+const CASE_NO_SRC = `(?<![\\d제])\\d{2,4}\\s*${CASE_CODE_PATTERN}\\s*${CASE_SERIAL_PATTERN}`
 const CASE_NO_RE = new RegExp(CASE_NO_SRC)
 /** cite_check 트리거 어휘 — 두 어순이 같은 목록을 본다 */
 const CITE_CHECK_KEYWORDS = "유효|살아|변경|폐기|뒤집|생사|추적|아직|citator"
