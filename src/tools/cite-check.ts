@@ -15,7 +15,7 @@ import type { LawApiClient } from "../lib/api-client.js"
 import { truncateResponse } from "../lib/schemas.js"
 import { formatToolError, notFoundResponse } from "../lib/errors.js"
 import { parsePrecedentXML, type PrecedentItem } from "../lib/xml-parser.js"
-import { CASE_CODE_PATTERN, extractCaseNumbers, fieldHasExactCase } from "../lib/case-citation.js"
+import { CASE_CODE_PATTERN, CASE_SERIAL_PATTERN, extractCaseNumbers, fieldHasExactCase } from "../lib/case-citation.js"
 import { extractHolding, scanTreatment, fieldText } from "../lib/precedent-body.js"
 import { rethrowIfFatal } from "../lib/fatal-errors.js"
 import type { ToolResponse } from "../lib/types.js"
@@ -58,7 +58,7 @@ export async function citeCheck(
   input: CiteCheckInput
 ): Promise<ToolResponse> {
   try {
-    const spacedCase = new RegExp(`(?<![\\d제])\\d{2,4}\\s*${CASE_CODE_PATTERN}\\s*\\d{1,7}(?!\\d)`, "g")
+    const spacedCase = new RegExp(`(?<![\\d제])\\d{2,4}\\s*${CASE_CODE_PATTERN}\\s*${CASE_SERIAL_PATTERN}`, "g")
     const normalizedInput = input.caseNumber.replace(spacedCase, match => match.replace(/\s/g, ""))
     const candidates = extractCaseNumbers(normalizedInput)
     if (candidates.length === 0) {
