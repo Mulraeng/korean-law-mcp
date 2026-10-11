@@ -35,6 +35,13 @@ If this saves you time, a GitHub ⭐ helps others find it.
 
 ---
 
+## v4.15.7: Month-end dates and eight-digit case numbers
+
+- Fixed `지난달`, `N개월 전`, and `최근 N개월` selecting the wrong month at month end (on March 30, "지난달" now means February)
+- Fixed eight-digit case serials being dropped from citation verification and nine-digit serials being truncated into a different case. [Changelog](CHANGELOG.md), issues #169 and #170
+
+---
+
 ## v4.15.6: Precedent body-search option
 
 - Added `search="both"` for precedent search: runs title and full-text search together, dedupes by precedent ID, and labels which search matched each hit. `search_decisions(domain="precedent", options={search:"both"})`
